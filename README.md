@@ -22,7 +22,9 @@ The project explores how Node.js interacts with:
 
 It serves as a **backend engineering case study** for understanding Node.js fundamentals.
 
----
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Thiago771414/imagensProjetos/main/slices/mobile/NodeNativeModules.png" width="900">
+</p>
 
 # Case Study
 
