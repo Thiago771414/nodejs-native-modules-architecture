@@ -1,9 +1,96 @@
-# Módulos Nativos do Node.js
-O Node.js possui vários módulos nativos que oferecem funcionalidades essenciais para o desenvolvimento de aplicativos em JavaScript, permitindo interagir com o sistema operacional, criar servidores web, manipular eventos, realizar resolução de nomes de domínio e muito mais. Abaixo, estão alguns dos principais módulos nativos e suas funcionalidades:
+# Node.js Native Modules Architecture Guide
 
-## 1. events
-O módulo events permite a criação e manipulação de eventos. Ele fornece uma classe chamada EventEmitter, que é usada para adicionar, remover e emitir eventos personalizados.
-````javascript
+![Project Type](https://img.shields.io/badge/Project%20Type-Backend%20Architecture%20Case%20Study-purple)
+![Node.js](https://img.shields.io/badge/Runtime-Node.js-green)
+![JavaScript](https://img.shields.io/badge/Language-JavaScript-yellow)
+![Architecture](https://img.shields.io/badge/Focus-Backend%20Fundamentals-blue)
+![Modules](https://img.shields.io/badge/Concept-Native%20Modules-orange)
+
+---
+
+# Node.js Native Modules Architecture Guide
+
+This repository demonstrates how core **Node.js native modules** work internally and how they can be used to build backend systems without external frameworks.
+
+The project explores how Node.js interacts with:
+
+- operating system resources
+- network sockets
+- HTTP servers
+- event-driven architecture
+- streams and file systems
+
+It serves as a **backend engineering case study** for understanding Node.js fundamentals.
+
+---
+
+# Case Study
+
+## Problem
+
+Many backend developers start working with frameworks like Express or NestJS without fully understanding how Node.js works internally.
+
+Without understanding native modules such as:
+
+- http
+- events
+- stream
+- dns
+- net
+
+it becomes difficult to debug performance issues or design scalable systems.
+
+---
+
+## Solution
+
+This repository demonstrates how Node.js native modules can be used to build core backend functionality such as:
+
+- HTTP servers
+- event-driven systems
+- DNS resolution
+- OS interaction
+- network sockets
+- data streaming
+
+Each example illustrates how Node.js exposes low-level system capabilities directly to JavaScript.
+
+---
+
+# Architecture
+
+Example architecture using native Node.js modules:
+
+```text
+Client
+│
+▼
+HTTP Server (http module)
+│
+▼
+Event System (events)
+│
+├─ File System / Streams
+│
+├─ Network Layer (net)
+│
+├─ Domain Resolution (dns)
+│
+└─ System Information (os)
+```
+
+
+This demonstrates Node.js' **event-driven and non-blocking architecture**.
+
+---
+
+# Native Modules Covered
+
+## Events Module
+
+The **events module** provides the `EventEmitter` class used for event-driven programming.
+
+```javascript
 const { EventEmitter } = require('events');
 
 const eventEmitter = new EventEmitter();
@@ -12,140 +99,186 @@ eventEmitter.on('bomdia', (data) => {
   console.log(`Recebi um bom dia de: ${data}`);
 });
 
-eventEmitter.emit('bomdia', 'Puc'); // Emitindo o evento 'bomdia' com os dados 'Puc'
-````
+eventEmitter.emit('bomdia', 'Puc');
+```
+This pattern is widely used internally by Node.js.
 
-## 2. http
-O módulo http permite a criação de servidores web e interação com requisições e respostas HTTP.
-````javascript
-cconst http = require('http');
+# HTTP Module
+
+The http module allows building web servers directly with Node.js.
+```js
+const http = require('http');
 
 const server = http.createServer((req, res) => {
-  res.statusCode = 200; // Código de status OK
+  res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
   res.end('{ "user": "Fake User", "empresa": "PUC Minas" }');
 });
 
-const port = 3000;
-server.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}/`);
-});
-````
-## 3. dns
-O módulo dns permite realizar resolução de nomes de domínio para endereços IP.
-````javascript
-const { Resolver } = require('dns');
-const resolver = new Resolver();
+server.listen(3000);
+```
+Frameworks like Express are built on top of this module.
 
-// Define o servidor DNS a ser utilizado
+# DNS Module
+
+The dns module enables domain name resolution.
+```js
+const { Resolver } = require('dns');
+
+const resolver = new Resolver();
 resolver.setServers(['8.8.8.8']);
 
-// Realiza a tradução de um nome de domínio para um endereço IP
 resolver.resolve4('pucminas.br', (err, addresses) => {
-  if (err) {
-    console.log(`Erro ao traduzir: ${err.message}`);
-  } else {
-    console.log('Endereço IP: ' + addresses[0]);
-  }
+  console.log(addresses);
 });
-````
-## 4. path
-O módulo path permite manipular caminhos de arquivos e diretórios de forma segura, independente do sistema operacional.
-````javascript
+```
+Used in networking and service discovery systems.
+
+# Path Module
+
+The path module safely manipulates filesystem paths.
+```js
 const path = require('path');
 
 const filePath = '/home/user/documents/report.txt';
 
-console.log('Nome do arquivo:', path.basename(filePath)); // Output: report.txt
-console.log('Extensão do arquivo:', path.extname(filePath)); // Output: .txt
-console.log('Diretório do arquivo:', path.dirname(filePath)); // Output: /home/user/documents
-````
+console.log(path.basename(filePath));
+console.log(path.extname(filePath));
+console.log(path.dirname(filePath));
+```
+Ensures compatibility across operating systems.
 
-## 5. os
-O módulo os fornece informações sobre o sistema operacional, como informações sobre a CPU, memória, entre outros.
-````javascript
+# OS Module
+
+The os module provides system-level information.
+```js
 const os = require('os');
 
-console.log('Plataforma:', os.platform()); // Output: darwin (no macOS)
-console.log('Arquitetura:', os.arch()); // Output: x64
-console.log('Memória livre (em bytes):', os.freemem());
-console.log('Total de memória (em bytes):', os.totalmem());
-````
-## 6. process
-O módulo process fornece informações sobre o processo Node.js em execução e permite interagir com variáveis de ambiente e parâmetros da linha de comando.
-````javascript
-// Listar todas as variáveis de ambiente
+console.log(os.platform());
+console.log(os.arch());
+console.log(os.freemem());
+console.log(os.totalmem());
+```
+Useful for monitoring and diagnostics.
+
+# Process Module
+
+The process module exposes information about the Node.js runtime.
+```js
 console.log(process.env);
+console.log(process.argv);
+console.log(process.pid);
+console.log(process.cwd());
+```
+Often used in CLI tools and configuration management.
 
-// Acessando argumentos passados na linha de comando
-console.log('Argumentos da linha de comando:', process.argv);
+# Net Module
 
-// Obtendo informações sobre o processo
-console.log('ID do processo:', process.pid);
-console.log('Diretório de trabalho atual:', process.cwd());
-````
-## 7. net
-O módulo net permite criar servidores e clientes para comunicação em rede.
-````javascript
+The net module enables TCP server and client creation.
+
+```js
 const net = require('net');
 
-// Criando um servidor TCP
 const server = net.createServer((socket) => {
-  socket.write('Conexão estabelecida com o servidor!\n');
-  socket.end('Encerrando conexão com o servidor!\n');
+  socket.write('Connection established');
+  socket.end();
 });
 
-const port = 3000;
-server.listen(port, () => {
-  console.log(`Servidor TCP rodando na porta ${port}`);
-});
+server.listen(3000);
+```
+This module powers many low-level networking systems.
 
-// Exemplo de cliente TCP
-const client = net.connect({ port: 3000 }, () => {
-  console.log('Cliente conectado ao servidor!');
-  client.write('Hello, servidor!');
-});
-client.on('data', (data) => {
-  console.log('Mensagem do servidor:', data.toString());
-  client.end();
-});
-````
-## 8. url
-O módulo url fornece funções para interpretar e manipular strings de URLs.
-````javascript
+# URL Module
+
+The url module parses and manipulates URLs.
+```js
 const url = require('url');
 
-const urlString = 'https://www.example.com:8080/path/to/resource?q=search#section';
+const parsedUrl = url.parse('https://example.com/path?q=test', true);
 
-const parsedUrl = url.parse(urlString, true);
+console.log(parsedUrl.query);
+```
+Important for HTTP request handling.
 
-console.log('Protocolo:', parsedUrl.protocol); // Output: https:
-console.log('Host:', parsedUrl.host); // Output: www.example.com:8080
-console.log('Caminho:', parsedUrl.pathname); // Output: /path/to/resource
-console.log('Query:', parsedUrl.query); // Output: { q: 'search' }
-console.log('Fragmento:', parsedUrl.hash); // Output: #section
-````
-## 9. stream
-O módulo stream é usado para manipular dados em fluxos, permitindo a leitura e escrita de grandes volumes de dados de forma eficiente.
-````javascript
+# Stream Module
+
+Streams allow efficient handling of large data flows.
+```js
 const fs = require('fs');
 
-// Cria um Readable Stream a partir de um arquivo
-const readableStream = fs.createReadStream('input.txt', 'utf8');
+const readable = fs.createReadStream('input.txt');
+const writable = fs.createWriteStream('output.txt');
 
-// Cria um Writable Stream para escrever em um arquivo
-const writableStream = fs.createWriteStream('output.txt');
+readable.pipe(writable);
+```
+Streams are fundamental to Node.js performance
 
-// Pega os dados do Readable Stream e escreve no Writable Stream
-readableStream.on('data', (chunk) => {
-  writableStream.write(chunk);
-});
+# Folder Structure
 
-// Fecha o Writable Stream quando todos os dados forem processados
-readableStream.on('end', () => {
-  writableStream.end();
-});
+Example structure for the project:
+```text
+node-native-modules
+│
+├── examples
+│   ├── events.js
+│   ├── http-server.js
+│   ├── dns.js
+│   ├── streams.js
+│   ├── net-server.js
+│
+├── README.md
+│
+└── package.json
+```
 
-console.log('Operação de cópia iniciada.');
-````
-Esses módulos nativos do Node.js são poderosos e essenciais para a criação de aplicativos robustos e eficientes. Com eles, é possível realizar uma ampla variedade de tarefas, desde a criação de servidores web até a manipulação de eventos e resolução de nomes de domínio.
+# How to Run
+
+Clone the repository:
+```text
+git clone
+```
+Navigate to the project:
+```text
+cd node-native-modules
+```
+Run any example:
+```text
+node examples/http-server.js
+```
+
+# Learning Outcomes
+
+Developers studying this repository will understand:
+
+Node.js event-driven architecture
+
+native module ecosystem
+
+HTTP server creation
+
+network communication
+
+streaming data processing
+
+OS and process interaction
+
+# Technologies
+
+Node.js
+
+JavaScript
+
+TCP Networking
+
+HTTP
+
+Event-driven architecture
+
+# Author
+
+Thiago Reis Lima
+
+LinkedIn
+```text
+https://www.linkedin.com/in/thiago-lima-2a5896166/
+```
