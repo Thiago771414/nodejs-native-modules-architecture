@@ -8,6 +8,12 @@
 
 ---
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Thiago771414/imagensProjetos/main/slices/mobile/NodeNativeModules.png" width="900">
+</p>
+
+---
+
 # Node.js Native Modules Architecture Guide
 
 This repository demonstrates how core **Node.js native modules** work internally and how they can be used to build backend systems without external frameworks.
@@ -21,10 +27,6 @@ The project explores how Node.js interacts with:
 - streams and file systems
 
 It serves as a **backend engineering case study** for understanding Node.js fundamentals.
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Thiago771414/imagensProjetos/main/slices/mobile/NodeNativeModules.png" width="900">
-</p>
 
 # Case Study
 
